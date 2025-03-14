@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SLAM DUNK - 大学公認バスケットボールサークル。初心者から経験者まで楽しめる環境です。">
+    <meta name="keywords" content="バスケットボール, サークル, 大学, スポーツ, バスケ, 初心者歓迎, 練習, 大会">
+    <title>SLAM DUNK - 大学バスケットボールサークル</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff7b00;
+            --primary-dark: #e06c00;
+            --primary-light: #ff9a3c;
+            --secondary: #2c2c2c;
+            --secondary-light: #454545;
+            --accent: #1e88e5;
+            --light: #f5f5f5;
+            --dark: #212121;
+            --success: #43a047;
+            --danger: #e53935;
+            --warning: #ffb300;
+            --info: #039be5;
+            --text-dark: #333;
+            --text-light: #fff;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+        
+        body {
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--light);
+            overflow-x: hidden;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: var(--primary);
+            color: var(--text-light);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            text-align: center;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--secondary-light);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: var(--text-light);
+        }
+        
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: var(--text-light);
+            z-index: 1000;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            height: 80px;
+        }
+        
+        .header.scrolled {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            height: 70px;
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -1px;
+        }
+        
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+            position: relative;
+        }
+        
+        .nav-links a {
+            font-weight: 600;
+            color: var(--secondary);
+            transition: var(--transition);
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        .nav-links a:before {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a:hover:before {
+            width: 100%;
+        }
+        
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            z-index: 100;
+        }
+        
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px 0;
+            background-color: var(--secondary);
+            transition: var(--transition);
+        }
+        
+        .join-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--text-light);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        
+        .join-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 123, 0, 0.2);
+        }
+        
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            background-image: url("https://source.unsplash.com/random/1920x1080/?basketball");
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            color: var(--text-light);
+            text-align: center;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+        }
+        
+        .hero-content {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-btns {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        /* About Section */
+        .section {
+            padding: 100px 0;
+            position: relative;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            padding-bottom: 20px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2::after {
+            content: "";
+            position: absolute;
+            width: 70px;
+            height: 3px;
+            background-color: var(--primary);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .section-title p {
+            color: #777;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+        
+        .about-image {
+            flex: 1;
+            position: relative;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: var(--transition);
+        }
+        
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        .about-text {
+            flex: 1;
+        }
+        
+        .about-text h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+        
+        .about-text p {
+            margin-bottom: 20px;
+        }
+        
+        .about-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .feature-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-light);
+            color: var(--text-light);
+            border-radius: 50%;
+            font-size: 1.2rem;
+        }
+        
+        /* Activities Section */
+        .activities {
+            background-color: #f9f9f9;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .activities::before {
+            content: "";
+            position: absolute;
+            top: -150px;
+            right: -150px;
+            width: 300px;
+            height: 300px;
+            background: var(--primary-light);
+            opacity: 0.1;
+            border-radius: 50%;
+            z-index: 0;
+        }
+        
+        .activities::after {
+            content: "";
+            position: absolute;
+            bottom: -150px;
+            left: -150px;
+            width: 300px;
+            height: 300px;
+            background: var(--primary-light);
+            opacity: 0.1;
+            border-radius: 50%;
+            z-index: 0;
+        }
+        
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .activity-card {
+            background-color: var(--text-light);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .activity-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .activity-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .activity-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .activity-card:hover .activity-img img {
+            transform: scale(1.1);
+        }
+        
+        .activity-content {
+            padding: 25px;
+        }
+        
+        .activity-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .activity-content p {
+            margin-bottom: 20px;
+            color: #666;
+        }
+        
+        .activity-time {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        .activity-time i {
+            color: var(--primary);
+        }
+        
+        /* Schedule Section */
+        .schedule-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 30px;
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .schedule-table th, .schedule-table td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .schedule-table th {
+            background-color: var(--secondary);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+        
+        .schedule-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .schedule-table tr:hover td {
+            background-color: #f9f9f9;
+        }
+        
+        .schedule-day {
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        
+        .schedule-time {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .schedule-location i {
+            color: var(--primary);
+            margin-right: 5px;
+        }
+        
+        /* Join Section */
+        .join {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-light));
+            color: var(--text-light);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .join::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        .join-container {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .join-form-container {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 40px;
+            box-shadow: var(--box-shadow);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .join-form-title {
+            color: var(--secondary);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .form-placeholder {
+            padding: 50px;
+            border: 2px dashed #ddd;
+            border-radius: var(--border-radius);
+            text-align: center;
+            color: #777;
+            margin-bottom: 30px;
+        }
+        
+        .join-info {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .join-info h4 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .join-info-list {
+            list-style: disc;
+            padding-left: 20px;
+            color: #666;
+        }
+        
+        .join-info-list li {
+            margin-bottom: 10px;
+        }
+        
+        /* News Section */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .news-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+        
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .news-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .news-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .news-card:hover .news-img img {
+            transform: scale(1.1);
+        }
+        
+        .news-content {
+            padding: 25px;
+        }
+        
+        .news-date {
+            display: inline-block;
+            padding: 5px 15px;
+            background-color: var(--primary);
+            color: white;
+            font-size: 0.8rem;
+            border-radius: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .news-content h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .news-content p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .read-more {
+            color: var(--primary);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: var(--transition);
+        }
+        
+        .read-more:hover {
+            color: var(--primary-dark);
+            gap: 8px;
+        }
+        
+        /* Achievements Section */
+        .achievements {
+            background-color: #f9f9f9;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            width: 3px;
+            background-color: #ddd;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            padding: 10px 50px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+            margin-bottom: 30px;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+        
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            top: 20px;
+        }
+        
+        .timeline-item:nth-child(odd)::after {
+            right: -10px;
+        }
+        
+        .timeline-item:nth-child(even)::after {
+            left: -10px;
+        }
+        
+        .timeline-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .timeline-year {
+            display: inline-block;
+            padding: 5px 15px;
+            background-color: var(--primary);
+            color: white;
+            font-size: 0.9rem;
+            border-radius: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .timeline-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .timeline-text {
+            color: #666;
+        }
+        
+        /* Gallery Section */
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 50px;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            cursor: pointer;
+            height: 200px;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .gallery-item::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .gallery-item:hover::before {
+            opacity: 1;
+        }
+        
+        .gallery-caption {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            color: white;
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .gallery-item:hover .gallery-caption {
+            bottom: 0;
+        }
+        
+        /* Contact Section */
+        .contact {
+            position: relative;
+        }
+        
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .contact-item {
+            background-color: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .contact-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-light);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 20px;
+        }
+        
+        .contact-item h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .contact-text {
+            color: #666;
+        }
+        
+        .contact-form {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 5px rgba(255, 123, 0, 0.2);
+        }
+        
+        textarea.form-control {
+            height: 150px;
+            resize: vertical;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        /* FAQ Section */
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            margin-bottom: 20px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--secondary);
+            transition: var(--transition);
+            background-color: white;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-size: 1rem;
+        }
+        
+        .faq-question:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .faq-question i {
+            transition: var(--transition);
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding: 0 20px;
+            color: #666;
+        }
+        
+        .faq-item.active .faq-question {
+            background-color: #f9f9f9;
+            color: var(--primary);
+        }
+        
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+            padding: 0 20px 20px;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--secondary);
+            color: white;
+            padding: 80px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        .footer-about p {
+            margin-bottom: 20px;
+            color: #bbb;
+        }
+        
+        .footer-heading {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-heading::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .footer-links a {
+            margin-bottom: 10px;
+            color: #bbb;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+        
+        .footer-contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 15px;
+            color: #bbb;
+        }
+        
+        .footer-contact-icon {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-top: 3px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--primary);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+        
+        .social-link:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+        
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: var(--transition);
+            opacity: 0;
+            visibility: hidden;
+            z-index: 100;
+        }
+        
+        .scroll-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-top:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-5px);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hamburger {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background-color: white;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: var(--transition);
+                z-index: 999;
+                padding: 50px 0;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                margin: 15px 0;
+            }
+            
+            .about-content {
+                flex-direction: column;
+            }
+            
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 20px;
+            }
+            
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+            
+            .timeline-item::after {
+                left: 20px !important;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section {
+                padding: 80px 0;
+            }
+            
+            .about-features {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .hero-btns {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .activity-card {
+                margin: 0 15px;
+            }
+            
+            .schedule-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .contact-form {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="#" class="logo">
+                    <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 50'%3E%3Cpath fill='%23ff7b00' d='M25 2C12.3 2 2 12.3 2 25s10.3 23 23 23 23-10.3 23-23S37.7 2 25 2zm0 2c11.6 0 21 9.4 21 21s-9.4 21-21 21S4 36.6 4 25 13.4 4 25 4z'/%3E%3Cpath fill='%23ff7b00' d='M25 4c-5.8 0-11 2.4-14.8 6.2L8.8 8.8C13 4.6 18.7 2 25 2s12 2.6 16.2 6.8l-1.4 1.4C36 6.4 30.8 4 25 4zM10.2 39.8C6.4 36 4 30.8 4 25c0-4.7 1.7-9.1 4.4-12.4l1.4 1.4C7.4 17 6 20.8 6 25c0 5.1 2.1 9.7 5.5 13.1l-1.3 1.7zM25 46c-5.8 0-11-2.4-14.8-6.2l1.4-1.4C15.1 41.9 19.7 44 25 44c5.1 0 9.7-2.1 13.1-5.5l1.4 1.4C35.8 43.6 30.6 46 25 46zm14.8-8.6C36 41.6 30.8 44 25 44c-4.7 0-9.1-1.7-12.4-4.4l1.4-1.4C17 41.6 20.8 43 25 43c5.8 0 11-2.4 14.8-6.2l-1.4-1.4C34.9 39.9 30.3 42 25 42c-5.1 0-9.7-2.1-13.1-5.5l-1.4 1.4C14.2 41.6 19.4 44 25 44c5.8 0 11-2.4 14.8-6.2l-1.4-1.4C34.9 39.9 30.3 42 25 42c-5.1 0-9.7-2.1-13.1-5.5l-1.4 1.4C14.2 41.6 19.4 44 25 44c4.7 0 9.1-1.7 12.4-4.4l-1.4-1.4C33 41.6 29.2 43 25 43c-5.8 0-11-2.4-14.8-6.2l1.4-1.4C15.1 39.9 19.7 42 25 42c5.1 0 9.7-2.1 13.1-5.5l1.4 1.4zM45.6 37.4C43 41.6 39.2 44 34.5 44c-3.3 0-6.3-1.2-8.7-3.1 3.7-1.3 6.4-4.8 6.4-8.9v-4c0-4.1-2.7-7.6-6.4-8.9C27.8 17.2 30.8 16 34.1 16c5.1 0 9.4 3.9 9.8 8.9.1.4.1.7.1 1.1 0 4.5-2.8 8.3-6.8 9.8.5.1 1 .2 1.5.2 2.5 0 4.8-1 6.5-2.6l.4 4zM16.2 37.2c-3.4-1.7-5.8-5.2-5.8-9.2 0-4 2.4-7.5 5.8-9.2V7.1C7.7 9.7 2 16.7 2 25c0 8.3 5.7 15.3 13.4 17.2.3.1.5.1.8.2v-5.2zM25 26c.6 0 1-.4 1-1s-.4-1-1-1-1 .4-1 1 .4 1 1 1z'/%3E%3C/svg%3E" alt="Logo"> 
+                    SLAM DUNK
+                </a>
+                <ul class="nav-links">
+                    <li><a href="#about">サークル概要</a></li>
+                    <li><a href="#activities">活動内容</a></li>
+                    <li><a href="#news">ニュース</a></li>
+                    <li><a href="#achievements">活動実績</a></li>
+                    <li><a href="#gallery">ギャラリー</a></li>
+                    <li><a href="#contact">お問い合わせ</a></li>
+                    <li><a href="#join" class="join-btn">入部応募</a></li>
+                </ul>
+                <button class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>熱くなれ！大学バスケットボールサークル</h1>
+            <p>初心者から経験者まで一緒に成長する場所。仲間と共に汗を流し、技術を磨き、思い出を作ろう。</p>
+            <div class="hero-btns">
+                <a href="#about" class="btn">サークルについて</a>
+                <a href="#join" class="btn btn-outline">入部応募はこちら</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>サークル概要</h2>
+                <p>SLAM DUNKは、バスケットボールを通じて技術向上と人間的成長を目指す大学公認サークルです。</p>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="https://source.unsplash.com/random/600x400/?basketball,team" alt="チーム写真">
+                </div>
+                <div class="about-text">
+                    <h3>バスケで繋がる仲間たち</h3>
+                    <p>2015年に設立された本サークルは、「楽しく、真剣に、成長する」をモットーに活動しています。男子チーム・女子チーム合わせて約50名のメンバーが在籍し、週3回の練習を基本に、学内外での試合や大会に積極的に参加しています。</p>
+                    <p>経験者はもちろん、大学からバスケを始める初心者も多数在籍。それぞれのレベルや目標に合わせた活動ができる環境を整えています。</p>
+                    
+                    <div class="about-features">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div>
+                                <h4>多様なメンバー</h4>
+                                <p>初心者から経験者まで様々なレベルのプレイヤーが在籍</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-basketball-ball"></i>
+                            </div>
+                            <div>
+                                <h4>充実した練習</h4>
+                                <p>基礎練習から実践形式まで体系的な練習メニュー</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div>
+                                <h4>定期的な大会参加</h4>
+                                <p>学内リーグや他大学との交流戦に積極的に参加</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-glass-cheers"></i>
+                            </div>
+                            <div>
+                                <h4>イベント充実</h4>
+                                <p>合宿や懇親会など交流イベントも定期的に開催</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Activities Section -->
+    <section id="activities" class="section activities">
+        <div class="container">
+            <div class="section-title">
+                <h2>活動内容</h2>
+                <p>週3回の練習を基本に、様々な活動を行っています。</p>
+            </div>
+            
+            <div class="activities-grid">
+                <div class="activity-card">
+                    <div class="activity-img">
+                        <img src="https://source.unsplash.com/random/400x300/?basketball,practice" alt="定期練習">
+                    </div>
+                    <div class="activity-content">
+                        <h3>定期練習</h3>
+                        <p>基礎練習からゲーム形式まで、各レベルに合わせた練習メニューを実施。初心者向けの基本指導も実施しています。</p>
+                        <div class="activity-time">
+                            <i class="far fa-clock"></i>
+                            <span>週3回（火・木・土）実施</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="activity-card">
+                    <div class="activity-img">
+                        <img src="https://source.unsplash.com/random/400x300/?basketball,game" alt="試合・大会">
+                    </div>
+                    <div class="activity-content">
+                        <h3>試合・大会</h3>
+                        <p>学内リーグ戦や他大学との交流戦、地域大会などに積極的に参加。実践経験を積むことで技術向上を図ります。</p>
+                        <div class="activity-time">
+                            <i class="far fa-calendar-alt"></i>
+                            <span>月1〜2回のペースで実施</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="activity-card">
+                    <div class="activity-img">
+                        <img src="https://source.unsplash.com/random/400x300/?training,gym" alt="合宿・特別練習">
+                    </div>
+                    <div class="activity-content">
+                        <h3>合宿・特別練習</h3>
+                        <p>長期休暇を利用した合宿や特別練習会を実施。集中的に技術を磨くだけでなく、メンバー間の結束も深まります。</p>
+                        <div class="activity-time">
+                            <i class="far fa-calendar-check"></i>
+                            <span>夏季・春季に各1回実施</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 50px;">
+                <h3 style="text-align: center; margin-bottom: 20px; color: var(--secondary);">練習スケジュール</h3>
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>曜日</th>
+                            <th>時間</th>
+                            <th>場所</th>
+                            <th>内容</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="schedule-day">火曜日</td>
+                            <td class="schedule-time">18:00 - 20:00</td>
+                            <td class="schedule-location"><i class="fas fa-map-marker-alt"></i> 大学第一体育館</td>
+                            <td>基礎練習、シュート練習</td>
+                        </tr>
+                        <tr>
+                            <td class="schedule-day">木曜日</td>
+                            <td class="schedule-time">18:00 - 20:00</td>
+                            <td class="schedule-location"><i class="fas fa-map-marker-alt"></i> 大学第一体育館</td>
+                            <td>戦術練習、ミニゲーム</td>
+                        </tr>
+                        <tr>
+                            <td class="schedule-day">土曜日</td>
+                            <td class="schedule-time">14:00 - 17:00</td>
+                            <td class="schedule-location"><i class="fas fa-map-marker-alt"></i> 大学第二体育館</td>
+                            <td>実践ゲーム、総合練習</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join Section -->
+    <section id="join" class="section join">
+        <div class="container join-container">
+            <div class="section-title">
+                <h2 style="color: white;">入部応募</h2>
+                <p style="color: rgba(255, 255, 255, 0.8);">一緒にバスケットボールを楽しみませんか？新メンバーを随時募集中です！</p>
+            </div>
+            
+            <div class="join-form-container">
+                <h3 class="join-form-title">入部応募フォーム</h3>
+                
+                <!-- Googleフォーム埋め込み用プレースホルダー -->
+                <div class="form-placeholder">
+                    <p>ここにGoogleフォームが埋め込まれます</p>
+                    <p style="font-size: 0.8rem; margin-top: 10px;">※Googleフォームのタグは別途貼り付け予定</p>
+                </div>
+                
+                <div class="join-info">
+                    <h4>入部に関する情報</h4>
+                    <ul class="join-info-list">
+                        <li>年間を通して随時入部を受け付けています</li>
+                        <li>入部費：2,000円、年会費：5,000円（ユニフォーム代別）</li>
+                        <li>初心者大歓迎！基礎から丁寧に指導します</li>
+                        <li>見学・体験参加も随時受け付けています（練習日に直接お越しください）</li>
+                        <li>用具：バスケットシューズ（必須）、動きやすい服装</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section id="news" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>ニュース・イベント情報</h2>
+                <p>最新の活動情報やイベント情報をお知らせします。</p>
+            </div>
+            
+            <div class="news-grid">
+                <div class="news-card">
+                    <div class="news-img">
+                        <img src="https://source.unsplash.com/random/400x300/?trophy,basketball" alt="大会結果">
+                    </div>
+                    <div class="news-content">
+                        <span class="news-date">2025年3月10日</span>
+                        <h3>地区大会ベスト8進出！</h3>
+                        <p>先週末に行われた地区大会において、男子チームがベスト8に進出しました。準々決勝では惜しくも敗退しましたが、チーム一丸となって戦い抜きました。</p>
+                        <a href="#" class="read-more">詳細を見る <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="news-card">
+                    <div class="news-img">
+                        <img src="https://source.unsplash.com/random/400x300/?basketball,training" alt="新入生歓迎会">
+                    </div>
+                    <div class="news-content">
+                        <span class="news-date">2025年3月5日</span>
+                        <h3>新入生歓迎イベント開催のお知らせ</h3>
+                        <p>4月15日(金)18:00より、大学第一体育館にて新入生歓迎イベントを開催します。バスケットボール未経験者も大歓迎です！気軽に参加してください。</p>
+                        <a href="#" class="read-more">詳細を見る <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="news-card">
+                    <div class="news-img">
+                        <img src="https://source.unsplash.com/random/400x300/?basketball,camp" alt="春合宿">
+                    </div>
+                    <div class="news-content">
+                        <span class="news-date">2025年2月20日</span>
+                        <h3>春季合宿のお知らせ</h3>
+                        <p>3月20日〜22日の3日間、春季合宿を実施します。集中的な練習と親睦を深める絶好の機会です。参加希望者は幹部までお申し込みください。</p>
+                        <a href="#" class="read-more">詳細を見る <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements Section -->
+    <section id="achievements" class="section achievements">
+        <div class="container">
+            <div class="section-title">
+                <h2>活動実績</h2>
+                <p>これまでの主な大会成績や活動実績をご紹介します。</p>
+            </div>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-year">2024年</span>
+                        <h3 class="timeline-title">関東学生バスケットボール交流戦 準優勝</h3>
+                        <p class="timeline-text">10大学が参加した交流戦で準優勝を獲得。決勝戦では惜しくも敗れたものの、チームとして大きな成長を感じる大会となりました。</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-year">2023年</span>
+                        <h3 class="timeline-title">学内スポーツ大会 バスケットボール競技 優勝</h3>
+                        <p class="timeline-text">大学内で開催されたスポーツ大会のバスケットボール競技で見事優勝。全試合圧倒的な強さを見せ、無敗での優勝を達成しました。</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-year">2022年</span>
+                        <h3 class="timeline-title">市民体育館カップ ベスト4進出</h3>
+                        <p class="timeline-text">地域の強豪チームが集まる市民体育館カップでベスト4に進出。準決勝では社会人チームに敗れたものの、学生チームとしては最高の成績を残しました。</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-year">2021年</span>
+                        <h3 class="timeline-title">関東学生リーグ 3部昇格</h3>
+                        <p class="timeline-text">関東学生リーグ4部で優勝し、3部への昇格を決めました。創部以来の快挙となりました。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>ギャラリー</h2>
+                <p>私たちの活動の様子をご覧ください。</p>
+            </div>
+            
+            <div class="gallery-container">
+                <div class="gallery-item">
+                    <img src="https://source.unsplash.com/random/400x300/?basketball,game" alt="試合の様子">
+                    <div class="gallery-caption">公式戦の様子</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://source.unsplash.com/random/400x300/?basketball,practice" alt="練習風景">
+                    <div class="gallery-caption">日々の練習風景</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://source.unsplash.com/random/400x300/?basketball,team" alt="チーム集合写真">
+                    <div class="gallery-caption">チーム集合写真</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://source.unsplash.com/random/400x300/?trophy,medal" alt="表彰式">
+                    <div class="gallery-caption">大会表彰式</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://source.unsplash.com/random/400x300/?basketball,coach" alt="コーチング">
+                    <div class="gallery-caption">コーチングの様子</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://source.unsplash.com/random/400x300/?basketball,team,celebration" alt="チーム交流">
+                    <div class="gallery-caption">チーム交流イベント</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://source.unsplash.com/random/400x300/?basketball,dunk" alt="プレー集">
+                    <div class="gallery-caption">ダイナミックなプレー</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://source.unsplash.com/random/400x300/?basketball,camp" alt="合宿">
+                    <div class="gallery-caption">夏季合宿の様子</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>お問い合わせ</h2>
+                <p>ご質問やお問い合わせは、以下の方法でお気軽にご連絡ください。</p>
+            </div>
+            
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3>メール</h3>
+                    <p class="contact-text">slamdunk@example.university.ac.jp</p>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <h3>電話</h3>
+                    <p class="contact-text">代表: 090-XXXX-XXXX<br>（平日 18:00-21:00）</p>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>活動場所</h3>
+                    <p class="contact-text">大学第一体育館、第二体育館<br>（詳細はスケジュール参照）</p>
+                </div>
+            </div>
+            
+            <div class="contact-form">
+                <h3 style="text-align: center; margin-bottom: 30px; color: var(--secondary);">お問い合わせフォーム</h3>
+                <form>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="お名前" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" placeholder="メールアドレス" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="件名" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" placeholder="メッセージ内容" required></textarea>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">送信する</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section" style="background-color: #f9f9f9;">
+        <div class="container">
+            <div class="section-title">
+                <h2>よくある質問</h2>
+                <p>入部を検討される方からよくいただく質問をまとめました。</p>
+            </div>
+            
+            <div class="faq-container">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        バスケットボール初心者でも入部できますか？ <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>はい、もちろん歓迎です！現在のメンバーの約3割は大学から始めた初心者です。基礎から丁寧に指導しますので、ぜひ気軽に見学・体験にお越しください。</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        練習は必ず全て参加しなければいけませんか？ <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>いいえ、強制ではありません。授業や他の予定を優先してください。ただ、大会参加などの際には、ある程度の練習参加が必要になることがあります。まずは参加可能な練習日からご参加ください。</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        必要な道具・費用はどのくらいかかりますか？ <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>必須の道具はバスケットボールシューズのみです。ボールは共用のものを使用できます。費用は、入部費2,000円、年会費5,000円、ユニフォーム代（約8,000円）が基本です。合宿や遠征に参加する場合は別途費用がかかります。</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        見学や体験はできますか？ <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>はい、いつでも歓迎です！練習日（火・木・土）にそのまま体育館へお越しいただくか、事前にメールや電話でご連絡いただければ対応します。動きやすい服装と室内シューズをご持参ください。</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        男女別のチームですか？ <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>基本的には男女別のチームで活動していますが、合同練習や交流イベントも定期的に行っています。女子チームのメンバーも随時募集中です！</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <a href="#" class="footer-logo">SLAM DUNK</a>
+                    <p>バスケットボールを通じて、技術向上と人間的成長を目指す大学公認サークル。初心者から経験者まで、共に汗を流し、成長する場所です。</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-line"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">リンク</h3>
+                    <ul class="footer-links">
+                        <li><a href="#about"><i class="fas fa-chevron-right"></i> サークル概要</a></li>
+                        <li><a href="#activities"><i class="fas fa-chevron-right"></i> 活動内容</a></li>
+                        <li><a href="#news"><i class="fas fa-chevron-right"></i> ニュース</a></li>
+                        <li><a href="#achievements"><i class="fas fa-chevron-right"></i> 活動実績</a></li>
+                        <li><a href="#gallery"><i class="fas fa-chevron-right"></i> ギャラリー</a></li>
+                        <li><a href="#join"><i class="fas fa-chevron-right"></i> 入部応募</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">練習日</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-calendar-day"></i> 火曜日: 18:00 - 20:00</li>
+                        <li><i class="fas fa-calendar-day"></i> 木曜日: 18:00 - 20:00</li>
+                        <li><i class="fas fa-calendar-day"></i> 土曜日: 14:00 - 17:00</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">お問い合わせ</h3>
+                    <div class="footer-contact-item">
+                        <div class="footer-contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>slamdunk@example.university.ac.jp</div>
+                    </div>
+                    <div class="footer-contact-item">
+                        <div class="footer-contact-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div>090-XXXX-XXXX (代表)</div>
+                    </div>
+                    <div class="footer-contact-item">
+                        <div class="footer-contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>大学第一体育館、第二体育館</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 SLAM DUNK - 大学バスケットボールサークル. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scroll Top Button -->
+    <div class="scroll-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script>
+        // Mobile Navigation
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            
+            const spans = hamburger.querySelectorAll('span');
+            spans[0].classList.toggle('active');
+            spans[1].classList.toggle('active');
+            spans[2].classList.toggle('active');
+        });
+        
+        // Navigation Links Click Event for Mobile
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+        
+        // Header Scroll Effect
+        const header = document.querySelector('.header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Scroll to Top Button
+        const scrollTop = document.querySelector('.scroll-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                scrollTop.classList.add('active');
+            } else {
+                scrollTop.classList.remove('active');
+            }
+        });
+        
+        scrollTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // FAQ Accordion
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.parentNode;
+                faqItem.classList.toggle('active');
+                
+                // Close other FAQs
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    if (item !== faqItem) {
+                        item.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
