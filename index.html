@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta name="description" content="SLAM DUNK - 大学公認バスケットボールサークル。初心者から経験者まで楽しめる環境です。">
     <meta name="keywords" content="バスケットボール, サークル, 大学, スポーツ, バスケ, 初心者歓迎, 練習, 大会">
     <title>SLAM DUNK - 大学バスケットボールサークル</title>
@@ -45,6 +45,9 @@
             color: var(--text-dark);
             background-color: var(--light);
             overflow-x: hidden;
+            width: 100%;
+            max-width: 100vw;
+            box-sizing: border-box;
         }
         
         a {
@@ -422,11 +425,12 @@
             overflow: hidden;
         }
         
-        .activity-img img {
+        .activity-img         img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: var(--transition);
+            max-width: 100%;
         }
         
         .activity-card:hover .activity-img img {
@@ -468,8 +472,10 @@
             margin-top: 30px;
             background: white;
             border-radius: var(--border-radius);
-            overflow: hidden;
+            overflow-x: auto;
             box-shadow: var(--box-shadow);
+            min-width: 100%;
+            display: block;
         }
         
         .schedule-table th, .schedule-table td {
@@ -584,7 +590,7 @@
         /* News Section */
         .news-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
         }
         
@@ -743,9 +749,11 @@
         /* Gallery Section */
         .gallery-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
             gap: 15px;
             margin-top: 50px;
+            width: 100%;
+            padding: 0 5px;
         }
         
         .gallery-item {
@@ -1181,20 +1189,66 @@
             }
             
             .section-title h2 {
-                font-size: 2rem;
+                font-size: 1.8rem;
+            }
+            
+            .section {
+                padding: 60px 0;
             }
             
             .activity-card {
-                margin: 0 15px;
+                margin: 0;
+                width: 100%;
+            }
+            
+            .activities-grid, .news-grid, .gallery-container {
+                grid-template-columns: 1fr;
+                padding: 0 10px;
             }
             
             .schedule-table {
                 display: block;
                 overflow-x: auto;
+                width: 100%;
+                -webkit-overflow-scrolling: touch;
             }
             
             .contact-form {
                 padding: 20px;
+            }
+            
+            .timeline-item {
+                padding-left: 60px;
+                padding-right: 10px;
+            }
+            
+            .timeline-content {
+                padding: 15px;
+            }
+            
+            .timeline-title {
+                font-size: 1.1rem;
+            }
+            
+            .join-form-container, .form-placeholder {
+                padding: 20px 15px;
+            }
+            
+            .container {
+                padding: 0 15px;
+            }
+            
+            .about-image {
+                margin-bottom: 30px;
+            }
+            
+            table {
+                font-size: 0.9rem;
+            }
+            
+            .faq-question {
+                padding: 15px;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -1519,35 +1573,35 @@
             
             <div class="gallery-container">
                 <div class="gallery-item">
-                    <img src="https://source.unsplash.com/random/400x300/?basketball,game" alt="試合の様子">
+                    <img src="https://source.unsplash.com/random/300x200/?basketball,game" alt="試合の様子">
                     <div class="gallery-caption">公式戦の様子</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://source.unsplash.com/random/400x300/?basketball,practice" alt="練習風景">
+                    <img src="https://source.unsplash.com/random/300x200/?basketball,practice" alt="練習風景">
                     <div class="gallery-caption">日々の練習風景</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://source.unsplash.com/random/400x300/?basketball,team" alt="チーム集合写真">
+                    <img src="https://source.unsplash.com/random/300x200/?basketball,team" alt="チーム集合写真">
                     <div class="gallery-caption">チーム集合写真</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://source.unsplash.com/random/400x300/?trophy,medal" alt="表彰式">
+                    <img src="https://source.unsplash.com/random/300x200/?trophy,medal" alt="表彰式">
                     <div class="gallery-caption">大会表彰式</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://source.unsplash.com/random/400x300/?basketball,coach" alt="コーチング">
+                    <img src="https://source.unsplash.com/random/300x200/?basketball,coach" alt="コーチング">
                     <div class="gallery-caption">コーチングの様子</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://source.unsplash.com/random/400x300/?basketball,team,celebration" alt="チーム交流">
+                    <img src="https://source.unsplash.com/random/300x200/?basketball,team,celebration" alt="チーム交流">
                     <div class="gallery-caption">チーム交流イベント</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://source.unsplash.com/random/400x300/?basketball,dunk" alt="プレー集">
+                    <img src="https://source.unsplash.com/random/300x200/?basketball,dunk" alt="プレー集">
                     <div class="gallery-caption">ダイナミックなプレー</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://source.unsplash.com/random/400x300/?basketball,camp" alt="合宿">
+                    <img src="https://source.unsplash.com/random/300x200/?basketball,camp" alt="合宿">
                     <div class="gallery-caption">夏季合宿の様子</div>
                 </div>
             </div>
